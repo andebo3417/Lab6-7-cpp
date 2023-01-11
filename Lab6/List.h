@@ -6,7 +6,6 @@
 
 using namespace std;
 
-
 class List
 {
 protected:
@@ -28,13 +27,12 @@ public:
 
     int clear();
 
-    virtual void print();
+    void print();
 
     void NonVirtualPrint();
 
     List& operator++(int);
 
     List& operator++();
-
 };
 

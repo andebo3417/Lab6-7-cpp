@@ -5,46 +5,44 @@
 #include "GroupName.h"
 
 template <typename T>
-class Group : public List
+class Group : public List 
 {
 public:
-	GroupName<T>* name;
+	T name;
 
 	Teacher teacher;
 
 	Group(T name, Teacher teacher) : List(0) {
-		this->name = new GroupName<T>(name);
+		this->name = name;
 		this->teacher = teacher;
 	}
 
 	Group(List* list, T name, Teacher teacher) : List(0) {
-		this->name = new GroupName<T>(name);
+		this->name = name;
 		this->teacher = teacher;
 		*this = *list;
-	};
+	}
 
 	using List::append;
-	int append(Student unit) {
+	void append(Student unit) {
 		(*this)++;
 
 		this->list[this->length() - 1] = unit;
-
-		return 0;
-	};
+	}
 
 	int set_name(T name) {
 		if (name.length() > 0) {
-			this->name->setName(name);
+			this->name = name;
 			return 0;
 		}
 		else return -1;
-	};
+	}
 
 	T get_name() {
-		return this->name->getName();
-	};
+		return this->name;
+	}
 
-	void print() override {
+	void print() {
 		if (this->length() > 0) {
 			cout << "\nGroup " << this->get_name() << ":\n\n";
 			cout << "Teacher:\n";
@@ -59,7 +57,7 @@ public:
 		}
 		else
 			throw length_error("\nList is empty.\n\n");
-	};
+	}
 
 	Group operator=(List unit) {
 		this->size = unit.length();
@@ -68,6 +66,6 @@ public:
 			this->list[i] = unit.list[i];
 		}
 		return *this;
-	};
+	}
 };
 

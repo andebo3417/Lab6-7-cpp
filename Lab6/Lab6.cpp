@@ -28,15 +28,16 @@ int main() {
             cout << "[3] - Print Lists[curList] of students" << endl;
             cout << "[4] - Calculate overall rating of a student" << endl;
             cout << "[5] - Change info about student" << endl;
-            cout << "[6] - Create new group from this Lists[curList]/group" << endl;
+            cout << "[6] - Create new group from this list/group" << endl;
             cout << "[7] - Create New list" << endl;
             cout << "[8] - Switch list" << endl;
             cout << "[9] - Found student by name" << endl;
             cout << "[10] - Sort lists of students by size in descending order" << endl;
+            cout << "[11] - Delete list by number" << endl;
             cout << "[0] - Exit" << endl << endl << ">";
             cin >> answer;
             try {
-                if (stoi(answer) >= 0 && stoi(answer) < 11) {
+                if (stoi(answer) >= 0 && stoi(answer) < 12) {
                     flag = true;
                 }
                 else {
@@ -61,48 +62,58 @@ int main() {
 
         switch (stoi(answer)) {
         case 1:
-            Lists[curList]->append();
+            if (Lists.size() > 0) {
+                Lists[curList]->append();
+            }
+            else cout << "\nNo list exists, create a new one.\n\n";
             system("pause");
             system("cls");
             break;
         case 2:
-            try {
-                Lists[curList]->print();
+            if (Lists.size() > 0) {
+                try {
+                    Lists[curList]->print();
+                }
+                catch (length_error e) {
+                    cout << e.what();
+                    system("pause");
+                    system("cls");
+                    break;
+                }
+                cout << "\nInput number of a student you want to delete:\n>";
+                cin >> number;
+                try {
+                    if (stoi(number) > 0 && stoi(number) <= Lists[curList]->length())
+                        if (Lists[curList]->remove(stoi(number) - 1) == 0)
+                            cout << "\nStudent was deleted.\n\n";
+                    else
+                        cout << "\nNumber of student is out of range.\n";
+                }
+                catch (invalid_argument ex) {
+                    cout << "\nIncorrect input.\n\n";
+                }
+                catch (out_of_range ex) {
+                    cout << "\nNumber is too big or too small.\n\n";
+                }
+                catch (length_error e) {
+                    cout << e.what();
+                }
             }
-            catch (length_error e) {
-                cout << e.what();
-                system("pause");
-                system("cls");
-                break;
-            }
-            cout << "\nInput number of a student you want to delete:\n>";
-            cin >> number;
-            try {
-                if (stoi(number) > 0 && stoi(number) <= Lists[curList]->length())
-                    if (Lists[curList]->remove(stoi(number) - 1) == 0)
-                        cout << "\nStudent was deleted.\n\n";
-                else
-                    cout << "\nNumber of student is out of range.\n";
-            }
-            catch (invalid_argument ex) {
-                cout << "\nIncorrect input.\n\n";
-            }
-            catch (out_of_range ex) {
-                cout << "\nNumber is too big or too small.\n\n";
-            }
-            catch (length_error e) {
-                cout << e.what();
-            }
+            else cout << "\nNo list exists, create a new one.\n\n";
             system("pause");
             system("cls");
             break;
         case 3:
-            try {
-                Lists[curList]->print();
+            if (Lists.size() > 0) {
+                try {
+                    Lists[curList]->print();
+                    //Lists[curList]->NonVirtualPrint();
+                }
+                catch (length_error e) {
+                    cout << e.what();
+                }
             }
-            catch (length_error e) {
-                cout << e.what();
-            }
+            else cout << "\nNo list exists, create a new one.\n\n";
             system("pause");
             system("cls");
             break;
@@ -262,13 +273,38 @@ int main() {
             system("pause");
             system("cls");
             break;
-            break;
         case 10:
             sort(Lists.begin(), Lists.end(), comp);
             cout << "\nLists were sorted.\n\n";
             system("pause");
             system("cls");
             break;
+        case 11:
+            try {
+                cout << "Enter number of list (1 - " << Lists.size() << ")\n>";
+                cin >> number;
+                if (stoi(number) > 0 && stoi(number) <= Lists.size()) {
+                    Lists.erase(Lists.begin() + stoi(number) - 1);
+                    if (stoi(number) - 1 == curList) {
+                        curList = 0;
+                    }
+                    if (stoi(number) - 1 < curList) {
+                        curList--;
+                    }
+                    cout << "\nList was deleted.\n\n";
+                }
+                else {
+                    cout << "\nNumber of list is out of range.\n\n";
+                }
+            }
+            catch (invalid_argument ex) {
+                cout << "\nIncorrect input.\n\n";
+            }
+            catch (out_of_range ex) {
+                cout << "\nNumber is too big or too small.\n\n";
+            }
+            system("pause");
+            system("cls");
             break;
         default:
             leave = true;
